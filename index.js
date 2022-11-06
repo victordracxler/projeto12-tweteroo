@@ -55,7 +55,14 @@ app.post('/sign-up', (req, res) => {
 });
 
 app.get('/tweets', (req, res) => {
-	res.send(tweets);
+	const tweetsWithAvatar = tweets.map((obj) => {
+		const find = users.find((item) => item.username === obj.username);
+		console.log(find);
+		const newObj = { ...obj, avatar: find.avatar };
+		return newObj;
+	});
+
+	res.send(tweetsWithAvatar);
 });
 
 app.post('/tweets', (req, res) => {
