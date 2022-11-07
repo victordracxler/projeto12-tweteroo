@@ -8,11 +8,11 @@ app.use(express.json());
 const users = [
 	{
 		username: 'bobesponja',
-		avatar: 'https://super.abril.com.br/wp-content/uploads/2020/09/04-09_gato_SITE.jpg?quality=70&strip=info',
+		avatar: 'https://yt3.ggpht.com/ytc/AMLnZu9tYPIG3bxki2LZz-NRrvHtLHRL0-wW95Cjgcr2=s900-c-k-c0x00ffffff-no-rj',
 	},
 	{
 		username: 'patrick',
-		avatar: 'https://super.abril.com.br/wp-content/uploads/2020/09/04-09_gato_SITE.jpg?quality=70&strip=info',
+		avatar: 'https://upload.wikimedia.org/wikipedia/pt/thumb/b/b1/Patrick_Estrela.png/200px-Patrick_Estrela.png',
 	},
 	{
 		username: 'lulamolusco',
@@ -55,12 +55,20 @@ app.post('/sign-up', (req, res) => {
 });
 
 app.get('/tweets', (req, res) => {
-	const tweetsWithAvatar = tweets.map((obj) => {
-		const find = users.find((item) => item.username === obj.username);
-		console.log(find);
-		const newObj = { ...obj, avatar: find.avatar };
-		return newObj;
-	});
+	const lastTenTweets = [];
+	if (tweets.length > 10) {
+		for (let i = tweets.length - 10; i < tweets.length; i++) {
+			lastTenTweets.push(tweets[i]);
+		}
+	}
+
+	const tweetsWithAvatar = (tweets.length > 10 ? lastTenTweets : tweets).map(
+		(obj) => {
+			const find = users.find((item) => item.username === obj.username);
+			const newObj = { ...obj, avatar: find.avatar };
+			return newObj;
+		}
+	);
 
 	res.send(tweetsWithAvatar);
 });
